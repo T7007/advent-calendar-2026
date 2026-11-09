@@ -8,24 +8,33 @@
 
 </head>
 
-<body>
-
 <h1>❤️ 1st of December ❤️</h1>
 
-<p>I have a surprise for you...</p>
+<body>
+    <div class="container">
+        <div class="card">
 
-<button onclick="showMessage()">
-Open
-</button>
+            <h1>❤️ 1st of December ❤️</h1>
 
-<p id="message"></p>
+            <p>I have a surprise for you...</p>
 
-<script>
-function showMessage() {
-    document.getElementById("message").innerHTML =
-    "One of my favourite things is waking up next to you.";
-}
-</script>
+            <button onclick="showMessage()">
+                Open
+            </button>
+
+            <div id="message" class="reveal hidden">
+                One of my favourite things is waking up next to you.
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+    function showMessage() {
+        document.getElementById("message")
+            .classList.remove("hidden");
+    }
+    </script>
 
 </body>
 </html>
