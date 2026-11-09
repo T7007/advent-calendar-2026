@@ -56,3 +56,45 @@ button:hover {
     background: #fff7dd;
     border-radius: 12px;
 }
+.message {
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.small-text {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.christmas-button {
+    background: linear-gradient(
+        135deg,
+        #b22222,
+        #d43f3f
+    );
+}
+
+.christmas-button:hover {
+    transform: translateY(-2px);
+}
+
+.photo {
+    width: 100%;
+    border-radius: 16px;
+    margin: 15px 0;
+}
+
+.fade-in {
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
