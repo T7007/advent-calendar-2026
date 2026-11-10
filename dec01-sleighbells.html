@@ -70,26 +70,32 @@
     </div>
 
     <script>
-
-        function openGift() {
-
-            const present =
-                document.getElementById("present");
-
-            const message =
-                document.getElementById("message");
-
-            present.classList.add("open");
-
-            setTimeout(() => {
-
-                message.classList.remove("hidden");
-
-            }, 1000);
-
-        }
-
+    
+    function openGift() {
+    
+        const present =
+            document.getElementById("present");
+    
+        const message =
+            document.getElementById("message");
+    
+        const music =
+            document.getElementById("music");
+    
+        present.classList.add("open");
+    
+        music.play();
+    
+        setTimeout(() => {
+            message.classList.remove("hidden");
+        }, 1000);
+    }
+    
     </script>
+
+    <audio id="music">
+        <source src="audio/dec01-music.mp3" type="audio/mpeg">
+    </audio>
 
 </body>
 
