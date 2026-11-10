@@ -150,3 +150,18 @@ body {
         transform: translateY(25%);
     }
 }
+
+.present {
+    font-size: 80px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin: 20px 0;
+}
+
+.present:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.present:active {
+    transform: scale(0.95);
+}
