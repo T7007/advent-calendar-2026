@@ -21,13 +21,14 @@ body {
 }
 
 .card {
+    position: relative;
+    z-index: 1;
+
     background: white;
     border-radius: 20px;
     padding: 24px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    position: relative;
-    z-index: 1;
 }
 
 h1 {
@@ -46,10 +47,10 @@ h2 {
 
 .tree {
     position: fixed;
-    right: -30px;
-    bottom: -20px;
-    font-size: 220px;
-    opacity: 0.2;
+    right: -15px;
+    bottom: -15px;
+    font-size: 180px;
+    opacity: 0.12;
     pointer-events: none;
     z-index: 0;
 }
