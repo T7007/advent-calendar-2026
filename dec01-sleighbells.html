@@ -1,65 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Day 1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Day 1 - Sleigh Bells</title>
 
-<link rel="stylesheet" href="css/style.css">
-
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+
+    <div class="snow"></div>
+
+    <div class="tree">
+        🎄
+    </div>
+
     <div class="container">
+
         <div class="card">
 
-            <h1>❤️ 1st of December ❤️</h1>
+            <h1>🎄 Day 1 🎄</h1>
 
-            <p>I have a surprise for you...</p>
+            <p>
+                Your first Christmas surprise is waiting...
+            </p>
 
             <div id="present" class="present" onclick="openGift()">
+
                 <div class="lid"></div>
+
                 <div class="box"></div>
+
                 <div class="ribbon-vertical"></div>
+
                 <div class="ribbon-horizontal"></div>
+
             </div>
 
-            <div id="message"
-                 class="reveal hidden fade-in">
-            
+            <div id="message" class="reveal hidden">
+
                 <h2>❤️ 24 Days of Christmas Begins ❤️</h2>
-            
+
+                <img
+                    src="images/dec01-photo.png"
+                    alt="A favourite memory"
+                    class="photo">
+x`x`
                 <p>
                     This year I wanted to make something a little different.
                 </p>
-            
+
                 <p>
-                    Every day you'll discover a small surprise,
-                    memory, puzzle, story or message.
+                    Every day you'll discover a little something...
                 </p>
-            
+
                 <p>
                     Let's start with a simple truth:
                 </p>
-            
+
                 <p>
-                    One of my favourite things in life is waking up beside you.
+                    Our family is AWESOME!
                 </p>
-            
+
             </div>
 
         </div>
+
     </div>
 
-    <div class="tree">🎄</div>
-
-    <div class="snow"></div>
-    
     <script>
-    function showMessage() {
-        document.getElementById("message")
-            .classList.remove("hidden");
-    }
+
+        function openGift() {
+
+            const present =
+                document.getElementById("present");
+
+            const message =
+                document.getElementById("message");
+
+            present.classList.add("open");
+
+            setTimeout(() => {
+
+                message.classList.remove("hidden");
+
+            }, 1000);
+
+        }
+
     </script>
 
 </body>
+
 </html>
