@@ -238,6 +238,18 @@ function checkWin() {
             document.getElementById("music");
         music.loop = false;
         music.volume = 0.1;
+
+        setTimeout(() => {
+        
+            message.classList.remove("hidden");
+        
+            message.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        
+        }, 1000);
+        
     }
 }
 
