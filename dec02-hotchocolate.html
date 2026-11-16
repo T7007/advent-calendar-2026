@@ -52,6 +52,10 @@
 
 </head>
 
+<audio id="music" loop>
+    <source src="audio/the_mountain-christmas-rock-449464.mp3" type="audio/mpeg">
+</audio>
+    
 <body>
 
 <div class="snow"></div>
@@ -65,30 +69,29 @@
         <h1>☕ Day 2 ☕</h1>
 
         <h2>
-            Hot Chocolate Puzzle
+            Family Christmas Puzzle
         </h2>
 
         <p>
-            Reassemble our photo to reveal today's surprise.
+            Reassemble our photo to reveal today's surprise!
+        </p>
+
+        <p style="font-size:0.9rem; opacity:0.8;">
+        (🎵 turn your sound up! 🎵)
         </p>
 
         <div id="puzzle" class="puzzle-container"></div>
 
         <div id="success" class="success">
 
-            <h2>❤️ You Did It! ❤️</h2>
+            <h2>You did it!</h2>
 
             <p>
-                Just like this puzzle,
-                all my favourite pieces fit together when you're around.
+                Today's prize:
             </p>
 
             <p>
-                Today's reward:
-            </p>
-
-            <p>
-                ☕ Redeem this voucher for a hot chocolate date with me.
+                ☕ Redeem this voucher for a proper coffee any time!
             </p>
 
         </div>
@@ -103,6 +106,7 @@ const size = 4;
 const total = size * size;
 
 let tiles = [];
+let musicStarted = false;
 
 function initPuzzle() {
 
@@ -189,6 +193,17 @@ function render() {
 
 function moveTile(position) {
 
+    if (!musicStarted) {
+    
+        const music =
+            document.getElementById("music");
+    
+        music.volume = 0.2;
+        music.play();
+    
+        musicStarted = true;
+    }
+    
     const empty =
         tiles.indexOf(15);
 
@@ -218,6 +233,10 @@ function checkWin() {
         document
             .getElementById("success")
             .style.display = "block";
+
+            const music =
+                document.getElementById("music");
+            music.volume = 0.4;
     }
 }
 
