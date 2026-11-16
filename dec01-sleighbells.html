@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Day 1 - Sleigh Bells</title>
+    <title>Day 1 - Christmas Present</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -31,7 +31,7 @@
                 <br>
                 Welcome to the future of advent calendars, where every day you'll find something new...<br>
                 <br>
-                Open the present to kick off with a celebration:
+                Open the present to kick off a month of fun...
             </p>
 
             <div id="present" class="present" onclick="openGift()">
@@ -87,7 +87,18 @@
         music.play();
     
         setTimeout(() => {
+        
             message.classList.remove("hidden");
+        
+            setTimeout(() => {
+        
+                message.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+        
+            }, 300);
+        
         }, 1000);
     }
     
