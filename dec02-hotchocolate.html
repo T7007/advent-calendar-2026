@@ -102,7 +102,7 @@
 
 <script>
 
-const size = 4;
+const size = 3;
 const total = size * size;
 
 let tiles = [];
@@ -121,7 +121,7 @@ function shuffle() {
 
     for (let i = 0; i < 500; i++) {
 
-        const emptyIndex = tiles.indexOf(15);
+        const emptyIndex = tiles.indexOf(8);
 
         const neighbours = getNeighbours(emptyIndex);
 
@@ -162,7 +162,7 @@ function render() {
         const tile =
             document.createElement("div");
 
-        if (tileNumber === 15) {
+        if (tileNumber === 8) {
 
             tile.className = "tile empty";
 
@@ -176,8 +176,10 @@ function render() {
             const col =
                 tileNumber % size;
 
+            const tileSize = 330 / size;
+            
             tile.style.backgroundPosition =
-                `-${col * 80}px -${row * 80}px`;
+                `-${col * tileSize}px -${row * tileSize}px`;
         }
 
         tile.addEventListener(
@@ -205,7 +207,7 @@ function moveTile(position) {
     }
     
     const empty =
-        tiles.indexOf(15);
+        tiles.indexOf(8);
 
     if (
         getNeighbours(empty)
