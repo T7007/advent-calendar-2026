@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Day 2 - Hot Chocolate</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .puzzle-container {
+            width: 320px;
+            height: 320px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 2px;
+        }
+
+        .tile {
+            background-image: url("images/dec02-photo.png");
+            background-size: 320px 320px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: transform 0.2s;
+        }
+
+        .tile:hover {
+            transform: scale(0.98);
+        }
+
+        .empty {
+            background: rgba(255,255,255,0.25);
+            border: 2px dashed rgba(255,255,255,0.4);
+        }
+
+        .instructions {
+            text-align: center;
+            margin: 15px;
+        }
+
+        .success {
+            display: none;
+            text-align: center;
+            margin-top: 25px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="snow"></div>
+
+<div class="tree">🎄</div>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>☕ Day 2 ☕</h1>
+
+        <h2>
+            Hot Chocolate Puzzle
+        </h2>
+
+        <p>
+            Reassemble our photo to reveal today's surprise.
+        </p>
+
+        <div id="puzzle" class="puzzle-container"></div>
+
+        <div id="success" class="success">
+
+            <h2>❤️ You Did It! ❤️</h2>
+
+            <p>
+                Just like this puzzle,
+                all my favourite pieces fit together when you're around.
+            </p>
+
+            <p>
+                Today's reward:
+            </p>
+
+            <p>
+                ☕ Redeem this voucher for a hot chocolate date with me.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const size = 4;
+const total = size * size;
+
+let tiles = [];
+
+function initPuzzle() {
+
+    tiles = [...Array(total).keys()];
+
+    shuffle();
+
+    render();
+}
+
+function shuffle() {
+
+    for (let i = 0; i < 500; i++) {
+
+        const emptyIndex = tiles.indexOf(15);
+
+        const neighbours = getNeighbours(emptyIndex);
+
+        const move =
+            neighbours[
+                Math.floor(Math.random() * neighbours.length)
+            ];
+
+        [tiles[emptyIndex], tiles[move]] =
+            [tiles[move], tiles[emptyIndex]];
+    }
+}
+
+function getNeighbours(index) {
+
+    const row = Math.floor(index / size);
+    const col = index % size;
+
+    const neighbours = [];
+
+    if (row > 0) neighbours.push(index - size);
+    if (row < size - 1) neighbours.push(index + size);
+    if (col > 0) neighbours.push(index - 1);
+    if (col < size - 1) neighbours.push(index + 1);
+
+    return neighbours;
+}
+
+function render() {
+
+    const puzzle =
+        document.getElementById("puzzle");
+
+    puzzle.innerHTML = "";
+
+    tiles.forEach((tileNumber, position) => {
+
+        const tile =
+            document.createElement("div");
+
+        if (tileNumber === 15) {
+
+            tile.className = "tile empty";
+
+        } else {
+
+            tile.className = "tile";
+
+            const row =
+                Math.floor(tileNumber / size);
+
+            const col =
+                tileNumber % size;
+
+            tile.style.backgroundPosition =
+                `-${col * 80}px -${row * 80}px`;
+        }
+
+        tile.addEventListener(
+            "click",
+            () => moveTile(position)
+        );
+
+        puzzle.appendChild(tile);
+
+    });
+
+}
+
+function moveTile(position) {
+
+    const empty =
+        tiles.indexOf(15);
+
+    if (
+        getNeighbours(empty)
+        .includes(position)
+    ) {
+
+        [tiles[position], tiles[empty]] =
+            [tiles[empty], tiles[position]];
+
+        render();
+
+        checkWin();
+    }
+}
+
+function checkWin() {
+
+    const solved =
+        tiles.every(
+            (value, index) => value === index
+        );
+
+    if (solved) {
+
+        document
+            .getElementById("success")
+            .style.display = "block";
+    }
+}
+
+initPuzzle();
+
+</script>
+
+</body>
+
+</html>
