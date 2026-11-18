@@ -245,14 +245,41 @@ function checkWin() {
         
             message.classList.remove("hidden");
         
-            message.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+            smoothScrollTo(
+                success.offsetTop,
+                2500
+            );
         
         }, 1000);
         
     }
+}
+
+function smoothScrollTo(target, duration) {
+
+    const start = window.pageYOffset;
+    const distance = target - start;
+    const startTime = performance.now();
+
+    function animate(currentTime) {
+
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        const eased =
+            1 - Math.pow(1 - progress, 3);
+
+        window.scrollTo(
+            0,
+            start + distance * eased
+        );
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    requestAnimationFrame(animate);
 }
 
 initPuzzle();
