@@ -48,6 +48,171 @@
             margin-top: 25px;
         }
 
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: system-ui, -apple-system, sans-serif;
+        
+            background: linear-gradient(
+                -45deg,
+                #ff6b35,
+                #f7931e,
+                #d9480f,
+                #732255
+            );
+        
+            background-size: 400% 400%;
+            animation: outbackSky 20s ease infinite;
+        
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes outbackSky {
+            0% {
+                background-position: 0% 50%;
+            }
+        
+            50% {
+                background-position: 100% 50%;
+            }
+        
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .sunset {
+            position: fixed;
+        
+            top: 40px;
+            right: 40px;
+        
+            width: 120px;
+            height: 120px;
+        
+            border-radius: 50%;
+        
+            background: #ffd166;
+        
+            box-shadow:
+                0 0 40px rgba(255,209,102,.8),
+                0 0 80px rgba(255,170,0,.4);
+        
+            pointer-events: none;
+        
+            z-index: 0;
+        }
+
+        .outback {
+            position: fixed;
+        
+            left: 0;
+            right: 0;
+            bottom: 0;
+        
+            height: 180px;
+        
+            background:
+                linear-gradient(
+                    to top,
+                    #70350f,
+                    #9c5a1a
+                );
+        
+            clip-path:
+                polygon(
+                    0% 100%,
+                    0% 55%,
+                    18% 65%,
+                    35% 45%,
+                    48% 60%,
+                    65% 35%,
+                    82% 55%,
+                    100% 40%,
+                    100% 100%
+                );
+        
+            z-index: 0;
+        }
+
+        .lens-flares {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 5;
+        }
+
+        .lens-flares::before,
+        .lens-flares::after {
+            content: "";
+        
+            position: absolute;
+        
+            width: 500px;
+            height: 500px;
+        
+            border-radius: 50%;
+        
+            background:
+                radial-gradient(
+                    rgba(255,255,255,.25),
+                    rgba(255,255,255,0)
+                );
+        
+            animation: drift 25s ease-in-out infinite;
+        }
+
+        .lens-flares::after {
+            width: 300px;
+            height: 300px;
+        
+            right: 10%;
+            top: 20%;
+        
+            animation-duration: 18s;
+        }
+
+        @keyframes drift {
+        
+            0% {
+                transform:
+                    translate(-50px, 0px)
+                    scale(1);
+            }
+        
+            50% {
+                transform:
+                    translate(50px, -30px)
+                    scale(1.15);
+            }
+        
+            100% {
+                transform:
+                    translate(-50px, 0px)
+                    scale(1);
+            }
+        }
+
+        .tree {
+            position: fixed;
+        
+            left: -20px;
+            bottom: -30px;
+        
+            font-size: 260px;
+        
+            opacity: 0.55;
+        
+            filter:
+                drop-shadow(0 0 10px rgba(0,0,0,.15));
+        
+            z-index: 1;
+        
+            pointer-events: none;
+        }
+        
     </style>
 
 </head>
@@ -58,7 +223,11 @@
     
 <body>
 
-<div class="snow"></div>
+<div class="outback"></div>
+    
+<div class="sunset"></div>
+
+<div class="lens-flares"></div>
 
 <div class="tree">🎄</div>
 
