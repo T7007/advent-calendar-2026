@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Day 3 - Christmas Lights</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        body {
+            background: linear-gradient(
+                180deg,
+                #081c3a,
+                #102a54,
+                #081c3a
+            );
+        }
+
+        .lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            display: flex;
+            justify-content: space-around;
+
+            padding: 20px;
+
+            z-index: 5;
+
+            pointer-events: none;
+        }
+
+        .bulb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+
+            animation: twinkle 2s infinite alternate;
+        }
+
+        .red {
+            background: #ff4d4d;
+        }
+
+        .green {
+            background: #4dff88;
+        }
+
+        .gold {
+            background: #ffd700;
+        }
+
+        .blue {
+            background: #66ccff;
+        }
+
+        @keyframes twinkle {
+
+            from {
+                opacity: 0.4;
+                box-shadow: 0 0 5px currentColor;
+            }
+
+            to {
+                opacity: 1;
+                box-shadow:
+                    0 0 20px currentColor,
+                    0 0 40px currentColor;
+            }
+
+        }
+
+        .quiz-question {
+            margin-top: 25px;
+        }
+
+        .quiz-question p {
+            margin-bottom: 15px;
+        }
+
+        .answer-btn {
+
+            background: #1c2f5c;
+            color: white;
+            border: none;
+
+            padding: 12px 20px;
+            margin: 5px;
+
+            border-radius: 10px;
+            cursor: pointer;
+
+            font-size: 1rem;
+        }
+
+        .answer-btn:hover {
+            background: #29457f;
+        }
+
+        #result {
+            display: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="lights">
+
+        <span class="bulb red"></span>
+        <span class="bulb green"></span>
+        <span class="bulb gold"></span>
+        <span class="bulb blue"></span>
+        <span class="bulb red"></span>
+        <span class="bulb green"></span>
+        <span class="bulb gold"></span>
+
+    </div>
+
+    <div class="tree">
+        🎄
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>✨ Day 3 ✨</h1>
+
+            <h2>
+                Christmas Lights Quiz
+            </h2>
+
+            <p>
+                Answer 5 True or False questions to reveal today's surprise!
+            </p>
+
+            <div id="quiz">
+
+                <div id="question-container">
+
+                </div>
+
+            </div>
+
+            <div id="result">
+
+                <h2>🏆 Quiz Complete! 🏆</h2>
+
+                <p>
+                    You scored
+                    <strong><span id="score"></span></strong>
+                    out of 5.
+                </p>
+
+                <h2>🎁 You've won a prize! 🎁</h2>
+
+                <p>
+                    It's hiding under the tree.
+                </p>
+
+                <br>
+
+                <h2>
+                    ❤️ 25 Days ❤️<br>
+                    of Christmas
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <audio id="music" loop>
+        <source src="audio/the_mountain-christmas-happy-618210.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+
+        const questions = [
+
+            {
+                question: "Santa Claus is traditionally associated with a sleigh pulled by reindeer.",
+                answer: true
+            },
+
+            {
+                question: "Christmas Day always falls on a Friday.",
+                answer: false
+            },
+
+            {
+                question: "Rudolph is famous for having a red nose.",
+                answer: true
+            },
+
+            {
+                question: "Australia celebrates Christmas during summer.",
+                answer: true
+            },
+
+            {
+                question: "The Grinch loved Christmas from the beginning of the story.",
+                answer: false
+            }
+
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let musicStarted = false;
+
+        function showQuestion() {
+
+            const container =
+                document.getElementById("question-container");
+
+            const q =
+                questions[currentQuestion];
+
+            container.innerHTML = `
+
+                <div class="quiz-question">
+
+                    <p>
+                        Question ${currentQuestion + 1} of ${questions.length}
+                    </p>
+
+                    <p>
+                        <strong>${q.question}</strong>
+                    </p>
+
+                    <button class="answer-btn"
+                            onclick="answer(true)">
+                        True
+                    </button>
+
+                    <button class="answer-btn"
+                            onclick="answer(false)">
+                        False
+                    </button>
+
+                </div>
+
+            `;
+        }
+
+        function answer(userAnswer) {
+
+            if (!musicStarted) {
+
+                const music =
+                    document.getElementById("music");
+
+                music.volume = 0.2;
+                music.play();
+
+                musicStarted = true;
+            }
+
+            if (
+                userAnswer ===
+                questions[currentQuestion].answer
+            ) {
+                score++;
+            }
+
+            currentQuestion++;
+
+            if (
+                currentQuestion <
+                questions.length
+            ) {
+
+                showQuestion();
+
+            } else {
+
+                endQuiz();
+            }
+
+        }
+
+        function endQuiz() {
+
+            document.getElementById("quiz")
+                .style.display = "none";
+
+            document.getElementById("result")
+                .style.display = "block";
+
+            document.getElementById("score")
+                .textContent = score;
+
+            const music =
+                document.getElementById("music");
+
+            music.loop = false;
+
+            setTimeout(() => {
+
+                document.getElementById("result")
+                    .scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            }, 300);
+
+        }
+
+        showQuestion();
+
+    </script>
+
+</body>
+
+</html>
