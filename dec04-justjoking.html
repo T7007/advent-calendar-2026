@@ -1,1 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 4 - Just Joking</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        body {
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5a2b,
+                    #a0522d,
+                    #6f4422
+                );
+            overflow-x: hidden;
+        }
+
+        .sparkles {
+            position: fixed;
+            inset: 0;
+
+            pointer-events: none;
+
+            background-image:
+                radial-gradient(
+                    rgba(255,255,255,.7) 2px,
+                    transparent 2px
+                );
+
+            background-size: 120px 120px;
+
+            animation: sparkleMove 20s linear infinite;
+
+            opacity: .3;
+            z-index: 0;
+        }
+
+        @keyframes sparkleMove {
+
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 200px 200px;
+            }
+
+        }
+
+        .card {
+
+            position: relative;
+            z-index: 2;
+
+            background: rgba(255,248,240,0.94);
+
+            border: 12px solid transparent;
+
+            border-image:
+                repeating-linear-gradient(
+                    45deg,
+                    #ffffff 0px,
+                    #ffffff 10px,
+                    #c62828 10px,
+                    #c62828 20px
+                ) 12;
+        }
+
+        .candy-cane {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            font-size: 90px;
+
+            cursor: pointer;
+
+            margin: 40px 0;
+        }
+
+        .cane-left,
+        .cane-right {
+
+            transition:
+                transform 1s ease;
+        }
+
+        .candy-cane:hover {
+
+            transform: scale(1.05);
+        }
+
+        .candy-cane.opened .cane-left {
+
+            transform:
+                translateX(-90px)
+                rotate(-30deg);
+        }
+
+        .candy-cane.opened .cane-right {
+
+            transform:
+                translateX(90px)
+                rotate(30deg);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .reveal {
+
+            animation:
+                fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        .joke {
+
+            background:
+                rgba(255,255,255,.5);
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: #c62828;
+        }
+
+        h2 {
+            color: #8b0000;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="sparkles"></div>
+
+    <div class="tree">
+        🎄
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>🍪 Day 4 🍬</h1>
+
+            <p>
+                A Christmas joke is hiding inside this candy cane...
+            </p>
+
+            <div id="candycane"
+                 class="candy-cane"
+                 onclick="crackJoke()">
+
+                <div class="cane-left">
+                    🍬
+                </div>
+
+                <div class="cane-right">
+                    🍬
+                </div>
+
+            </div>
+
+            <div id="message"
+                 class="hidden reveal">
+
+                <h2>
+                    😂 Cracker Joke 😂
+                </h2>
+
+                <div class="joke">
+
+                    <p>
+                        <strong>
+                            Q: Why is it harder to buy advent calendars?
+                        </strong>
+                    </p>
+
+                    <p>
+                        A: Their days are numbered!
+                    </p>
+
+                </div>
+
+                <br>
+
+                <h2>
+                    ❤️ 25 Days ❤️<br>
+                    of Christmas
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <audio id="music">
+        <source src="audio/christmas-theme.mp3"
+                type="audio/mpeg">
+    </audio>
+
+    <script>
+
+        function crackJoke() {
+
+            const cane =
+                document.getElementById("candycane");
+
+            const message =
+                document.getElementById("message");
+
+            const music =
+                document.getElementById("music");
+
+            music.volume = 0.2;
+
+            music.play();
+
+            cane.classList.add("opened");
+
+            setTimeout(() => {
+
+                message.classList.remove("hidden");
+
+                setTimeout(() => {
+
+                    smoothScrollTo(
+                        message.offsetTop,
+                        2500
+                    );
+
+                }, 300);
+
+            }, 1000);
+
+        }
+
+        function smoothScrollTo(target, duration) {
+
+            const start = window.pageYOffset;
+            const distance = target - start;
+            const startTime = performance.now();
+
+            function animate(currentTime) {
+
+                const elapsed =
+                    currentTime - startTime;
+
+                const progress =
+                    Math.min(
+                        elapsed / duration,
+                        1
+                    );
+
+                const eased =
+                    1 - Math.pow(
+                        1 - progress,
+                        3
+                    );
+
+                window.scrollTo(
+                    0,
+                    start + distance * eased
+                );
+
+                if (progress < 1) {
+
+                    requestAnimationFrame(
+                        animate
+                    );
+                }
+
+            }
+
+            requestAnimationFrame(
+                animate
+            );
+        }
+
+    </script>
+
+</body>
+</html>
