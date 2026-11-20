@@ -72,14 +72,11 @@
                 ) 12;
         }
 
-        /* Candy Cane */
+        .cracker {
 
-        .candy-cane {
+            display: block;
 
-            position: relative;
-
-            width: 120px;
-            height: 220px;
+            width: 260px;
 
             margin: 40px auto;
 
@@ -90,107 +87,94 @@
 
             transition:
                 transform 1s ease;
-        }
 
-        .cane-top {
-
-            position: absolute;
-
-            top: 0;
-            left: 20px;
-
-            width: 80px;
-            height: 80px;
-
-            border: 20px solid white;
-
-            border-bottom: none;
-            border-left: none;
-
-            border-radius: 0 80px 0 0;
-
-            background:
-                repeating-linear-gradient(
-                    45deg,
-                    #d62828 0px,
-                    #d62828 12px,
-                    white 12px,
-                    white 24px
+            filter:
+                drop-shadow(
+                    0 0 15px rgba(255,255,255,.35)
                 );
-
-            box-sizing: border-box;
-
-            box-shadow:
-                0 0 15px rgba(255,255,255,.25);
-        }
-
-        .cane-stick {
-
-            position: absolute;
-
-            top: 70px;
-            left: 60px;
-
-            width: 20px;
-            height: 140px;
-
-            border-radius: 12px;
-
-            background:
-                repeating-linear-gradient(
-                    45deg,
-                    #d62828 0px,
-                    #d62828 12px,
-                    white 12px,
-                    white 24px
-                );
-
-            box-shadow:
-                0 0 10px rgba(255,255,255,.35);
         }
 
         @keyframes wobble {
 
             0% {
-                transform: rotate(-3deg);
+                transform: rotate(-2deg);
             }
 
             50% {
-                transform: rotate(3deg);
+                transform: rotate(2deg);
             }
 
             100% {
-                transform: rotate(-3deg);
+                transform: rotate(-2deg);
             }
+
         }
 
-        .candy-cane.opened {
+        .cracker.opened {
 
-            animation: snapOpen 1s forwards;
+            animation:
+                crackerPop 1s forwards;
         }
 
-        @keyframes snapOpen {
+        @keyframes crackerPop {
 
             0% {
+
                 transform:
                     scale(1)
                     rotate(0deg);
+
+                opacity: 1;
             }
 
-            50% {
+            40% {
+
                 transform:
-                    scale(1.2)
-                    rotate(-12deg);
+                    scale(1.1)
+                    rotate(-6deg);
             }
 
             100% {
 
                 transform:
-                    scale(1.4)
-                    rotate(20deg);
+                    scale(1.3)
+                    rotate(6deg);
 
                 opacity: 0;
             }
+
+        }
+
+        .bang {
+
+            font-size: 2rem;
+
+            text-align: center;
+
+            margin-top: 10px;
+
+            color: #c62828;
+
+            animation:
+                bangPop 0.5s ease;
+        }
+
+        @keyframes bangPop {
+
+            from {
+
+                transform: scale(0);
+
+                opacity: 0;
+            }
+
+            to {
+
+                transform: scale(1);
+
+                opacity: 1;
+            }
+
         }
 
         .hidden {
@@ -206,13 +190,19 @@
         @keyframes fadeIn {
 
             from {
+
                 opacity: 0;
-                transform: translateY(20px);
+
+                transform:
+                    translateY(20px);
             }
 
             to {
+
                 opacity: 1;
-                transform: translateY(0);
+
+                transform:
+                    translateY(0);
             }
 
         }
@@ -220,7 +210,7 @@
         .joke {
 
             background:
-                rgba(255,255,255,.5);
+                rgba(255,255,255,.45);
 
             padding: 20px;
 
@@ -253,18 +243,24 @@
 
         <div class="card">
 
-            <h1>🍪 Day 4 🍬</h1>
+            <h1>🎁 Day 4 🎁</h1>
 
             <p>
-                A Christmas joke is hiding inside this candy cane...
+                A Christmas joke is hiding inside this cracker...
             </p>
 
-            <div id="candycane"
-                 class="candy-cane"
-                 onclick="crackJoke()">
+            <img
+                id="cracker"
+                class="cracker"
+                src="images/christmas-cracker.png"
+                alt="Christmas Cracker"
+                onclick="crackJoke()">
 
-                <div class="cane-top"></div>
-                <div class="cane-stick"></div>
+            <div
+                id="bang"
+                class="bang hidden">
+
+                💥 BANG! 💥
 
             </div>
 
@@ -272,7 +268,7 @@
                  class="hidden reveal">
 
                 <h2>
-                    😂 Cracker Joke 😂
+                    😂 Christmas Joke 😂
                 </h2>
 
                 <div class="joke">
@@ -303,19 +299,23 @@
     </div>
 
     <audio id="music">
-        <source src="audio/atlasaudio-christmas-jazz-621548.mp3"
-                type="audio/mpeg">
+        <source
+            src="audio/christmas-theme.mp3"
+            type="audio/mpeg">
     </audio>
 
     <script>
 
         function crackJoke() {
 
-            const cane =
-                document.getElementById("candycane");
+            const cracker =
+                document.getElementById("cracker");
 
             const message =
                 document.getElementById("message");
+
+            const bang =
+                document.getElementById("bang");
 
             const music =
                 document.getElementById("music");
@@ -324,7 +324,9 @@
 
             music.play();
 
-            cane.classList.add("opened");
+            cracker.classList.add("opened");
+
+            bang.classList.remove("hidden");
 
             setTimeout(() => {
 
@@ -345,9 +347,14 @@
 
         function smoothScrollTo(target, duration) {
 
-            const start = window.pageYOffset;
-            const distance = target - start;
-            const startTime = performance.now();
+            const start =
+                window.pageYOffset;
+
+            const distance =
+                target - start;
+
+            const startTime =
+                performance.now();
 
             function animate(currentTime) {
 
@@ -376,6 +383,7 @@
                     requestAnimationFrame(
                         animate
                     );
+
                 }
 
             }
@@ -389,4 +397,5 @@
     </script>
 
 </body>
+
 </html>
