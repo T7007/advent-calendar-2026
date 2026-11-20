@@ -72,45 +72,125 @@
                 ) 12;
         }
 
+        /* Candy Cane */
+
         .candy-cane {
 
-            display: flex;
+            position: relative;
 
-            justify-content: center;
+            width: 120px;
+            height: 220px;
 
-            gap: 10px;
-
-            font-size: 90px;
+            margin: 40px auto;
 
             cursor: pointer;
 
-            margin: 40px 0;
-        }
-
-        .cane-left,
-        .cane-right {
+            animation:
+                wobble 2.5s ease-in-out infinite;
 
             transition:
                 transform 1s ease;
         }
 
-        .candy-cane:hover {
+        .cane-top {
 
-            transform: scale(1.05);
+            position: absolute;
+
+            top: 0;
+            left: 20px;
+
+            width: 80px;
+            height: 80px;
+
+            border: 20px solid white;
+
+            border-bottom: none;
+            border-left: none;
+
+            border-radius: 0 80px 0 0;
+
+            background:
+                repeating-linear-gradient(
+                    45deg,
+                    #d62828 0px,
+                    #d62828 12px,
+                    white 12px,
+                    white 24px
+                );
+
+            box-sizing: border-box;
+
+            box-shadow:
+                0 0 15px rgba(255,255,255,.25);
         }
 
-        .candy-cane.opened .cane-left {
+        .cane-stick {
 
-            transform:
-                translateX(-90px)
-                rotate(-30deg);
+            position: absolute;
+
+            top: 70px;
+            left: 60px;
+
+            width: 20px;
+            height: 140px;
+
+            border-radius: 12px;
+
+            background:
+                repeating-linear-gradient(
+                    45deg,
+                    #d62828 0px,
+                    #d62828 12px,
+                    white 12px,
+                    white 24px
+                );
+
+            box-shadow:
+                0 0 10px rgba(255,255,255,.35);
         }
 
-        .candy-cane.opened .cane-right {
+        @keyframes wobble {
 
-            transform:
-                translateX(90px)
-                rotate(30deg);
+            0% {
+                transform: rotate(-3deg);
+            }
+
+            50% {
+                transform: rotate(3deg);
+            }
+
+            100% {
+                transform: rotate(-3deg);
+            }
+        }
+
+        .candy-cane.opened {
+
+            animation: snapOpen 1s forwards;
+        }
+
+        @keyframes snapOpen {
+
+            0% {
+                transform:
+                    scale(1)
+                    rotate(0deg);
+            }
+
+            50% {
+                transform:
+                    scale(1.2)
+                    rotate(-12deg);
+            }
+
+            100% {
+
+                transform:
+                    scale(1.4)
+                    rotate(20deg);
+
+                opacity: 0;
+            }
         }
 
         .hidden {
@@ -158,6 +238,7 @@
         }
 
     </style>
+
 </head>
 
 <body>
@@ -182,13 +263,8 @@
                  class="candy-cane"
                  onclick="crackJoke()">
 
-                <div class="cane-left">
-                    🍬
-                </div>
-
-                <div class="cane-right">
-                    🍬
-                </div>
+                <div class="cane-top"></div>
+                <div class="cane-stick"></div>
 
             </div>
 
@@ -227,7 +303,7 @@
     </div>
 
     <audio id="music">
-        <source src="audio/christmas-theme.mp3"
+        <source src="audio/atlasaudio-christmas-jazz-621548.mp3"
                 type="audio/mpeg">
     </audio>
 
@@ -307,6 +383,7 @@
             requestAnimationFrame(
                 animate
             );
+
         }
 
     </script>
