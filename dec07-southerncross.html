@@ -245,6 +245,28 @@
             }
         }
 
+        .star {
+        
+            position: absolute;
+        
+            width: 28px;
+            height: 28px;
+        
+            border-radius: 50%;
+        
+            background: white;
+        
+            box-shadow:
+                0 0 10px white,
+                0 0 20px white;
+        
+            cursor: pointer;
+        
+            transition: all .3s ease;
+        
+            z-index: 10;   /* ADD THIS */
+        }
+        
     </style>
 
 </head>
@@ -285,9 +307,9 @@
 
             <div class="constellation-area">
 
-                <svg width="320"
-                     height="350"
-                     style="position:absolute;left:0;top:0;z-index:1">
+                    <svg width="320"
+                         height="350"
+                         style="position:absolute;left:0;top:0;z-index:1;pointer-events:none">
 
                     <line id="line1"
                           x1="160"
