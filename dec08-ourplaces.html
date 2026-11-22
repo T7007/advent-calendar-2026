@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Day 8 - Our Places</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <style>
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .passport {
+
+            font-size: 120px;
+
+            cursor: pointer;
+
+            transition: transform .3s ease;
+
+            margin: 30px 0;
+        }
+
+        .passport:hover {
+
+            transform: scale(1.05);
+        }
+
+        .passport.opened {
+
+            animation:
+                passportOpen 1s forwards;
+        }
+
+        @keyframes passportOpen {
+
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform:
+                    scale(1.3)
+                    rotate(-12deg);
+
+                opacity: 0;
+            }
+        }
+
+        .place-card {
+
+            background:
+                rgba(255,255,255,.25);
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            margin: 20px 0;
+
+            backdrop-filter: blur(6px);
+        }
+
+        .place-name {
+
+            font-size: 1.8rem;
+
+            font-weight: bold;
+        }
+
+        .progress-container {
+
+            width: 100%;
+
+            background:
+                rgba(255,255,255,.25);
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+
+            height: 20px;
+
+            width: 0%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffd166,
+                    #ff9f1c
+                );
+
+            transition: width .5s ease;
+        }
+
+        .next-button {
+
+            background: white;
+
+            color: #b85c00;
+
+            border: none;
+
+            border-radius: 12px;
+
+            padding: 12px 24px;
+
+            font-size: 1rem;
+
+            cursor: pointer;
+
+            margin-top: 20px;
+        }
+
+        .next-button:hover {
+
+            transform: scale(1.05);
+        }
+
+        .voucher {
+
+            position: relative;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fffdf5,
+                    #fff4cc
+                );
+
+            border:
+                3px dashed #d4af37;
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            margin-top: 20px;
+
+            box-shadow:
+                0 10px 25px rgba(0,0,0,.15);
+
+            overflow: hidden;
+        }
+
+        .voucher-header {
+
+            background: #ff9f1c;
+
+            color: white;
+
+            font-weight: bold;
+
+            padding: 12px;
+
+            margin:
+                -25px
+                -25px
+                20px
+                -25px;
+        }
+
+        .gold-seal {
+
+            position: absolute;
+
+            top: 15px;
+            right: 15px;
+
+            width: 80px;
+            height: 80px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            font-size: .65rem;
+            font-weight: bold;
+
+            color: #7a5c00;
+
+            background:
+                radial-gradient(
+                    circle at 30% 30%,
+                    #fff7b2,
+                    #d4af37 60%,
+                    #b8860b
+                );
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .reveal {
+
+            animation:
+                fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(20px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="lens-flares"></div>
+
+    <div class="outback"></div>
+
+    <div class="tree">
+        🎄
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>
+                🗺️ Our Places 🗺️
+            </h1>
+
+            <p>
+                Every place tells part of our story.
+            </p>
+
+            <p>
+                Tap the passport to begin our journey.
+            </p>
+
+            <div id="passport"
+                 class="passport"
+                 onclick="startJourney()">
+
+                📘
+
+            </div>
+
+            <div id="journey"
+                 class="hidden">
+
+                <div class="place-card">
+
+                    <div class="place-name"
+                         id="place-name">
+
+                    </div>
+
+                </div>
+
+                <div class="progress-container">
+
+                    <div class="progress-bar"
+                         id="progress-bar">
+
+                    </div>
+
+                </div>
+
+                <p id="progress-text"></p>
+
+                <button class="next-button"
+                        onclick="nextPlace()">
+
+                    Next Destination ✈️
+
+                </button>
+
+            </div>
+
+            <div id="final-message"
+                 class="hidden reveal">
+
+                <h2>
+                    ❤️ Our Favourite Place ❤️
+                </h2>
+
+                <p>
+                    After all the flights,
+                    all the road trips,
+                    all the adventures
+                    and all the memories...
+                </p>
+
+                <p>
+                    My favourite place is still
+                    wherever I'm with you.
+                </p>
+
+                <div class="voucher">
+
+                    <div class="gold-seal">
+                        VALID<br>
+                        FOR<br>
+                        BREAKFAST
+                    </div>
+
+                    <div class="voucher-header">
+                        SUNRISE BREAKFAST VOUCHER
+                    </div>
+
+                    <h2>
+                        🥐 BREAKFAST DATE 🥐
+                    </h2>
+
+                    <p>
+                        This voucher includes:
+                    </p>
+
+                    <p>
+                        ☕ Coffee<br>
+                        🥞 Breakfast<br>
+                        ❤️ Great Company
+                    </p>
+
+                    <p>
+                        No expiry date.
+                    </p>
+
+                </div>
+
+                <br>
+
+                <h2>
+                    ❤️ 25 Days ❤️<br>
+                    of Christmas
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <audio id="music">
+        <source src="audio/dec08-christmas-lights.mp3"
+                type="audio/mpeg">
+    </audio>
+
+    <script>
+
+        const places = [
+
+            "🌲 Dandenong Ranges",
+            "🏙️ Sydney",
+            "🇳🇿 New Zealand",
+            "🇹🇭 Thailand",
+            "🇲🇾 Malaysia",
+            "🇸🇬 Singapore",
+            "🇺🇸 Orange County",
+            "🌉 San Francisco",
+            "🤠 Nashville",
+            "🗽 New York",
+            "⛷️ Heavenly Ski Slopes",
+            "🇫🇷 Paris",
+            "🚤 Venice",
+            "🍷 Tuscany",
+            "🌊 Amalfi Coast",
+            "🏛️ Rome",
+            "🏠 Newport, Victoria"
+
+        ];
+
+        let currentPlace = 0;
+        let musicStarted = false;
+
+        function startJourney() {
+
+            const passport =
+                document.getElementById(
+                    "passport"
+                );
+
+            passport.classList.add(
+                "opened"
+            );
+
+            const music =
+                document.getElementById(
+                    "music"
+                );
+
+            music.volume = 0.2;
+
+            music.play();
+
+            musicStarted = true;
+
+            setTimeout(() => {
+
+                passport.style.display =
+                    "none";
+
+                document
+                    .getElementById(
+                        "journey"
+                    )
+                    .classList.remove(
+                        "hidden"
+                    );
+
+                showPlace();
+
+            }, 1000);
+        }
+
+        function showPlace() {
+
+            document
+                .getElementById(
+                    "place-name"
+                )
+                .textContent =
+                places[currentPlace];
+
+            document
+                .getElementById(
+                    "progress-text"
+                )
+                .textContent =
+                (currentPlace + 1) +
+                " of " +
+                places.length +
+                " places visited";
+
+            const percentage =
+                ((currentPlace + 1)
+                / places.length)
+                * 100;
+
+            document
+                .getElementById(
+                    "progress-bar"
+                )
+                .style.width =
+                percentage + "%";
+        }
+
+        function nextPlace() {
+
+            currentPlace++;
+
+            if (
+                currentPlace <
+                places.length
+            ) {
+
+                showPlace();
+
+            }
+            else {
+
+                journeyComplete();
+            }
+        }
+
+        function journeyComplete() {
+
+            document
+                .getElementById(
+                    "journey"
+                )
+                .style.display =
+                "none";
+
+            const music =
+                document.getElementById(
+                    "music"
+                );
+
+            music.loop = false;
+
+            const message =
+                document.getElementById(
+                    "final-message"
+                );
+
+            message.classList.remove(
+                "hidden"
+            );
+
+            setTimeout(() => {
+
+                smoothScrollTo(
+                    message.offsetTop,
+                    2500
+                );
+
+            }, 300);
+        }
+
+        function smoothScrollTo(
+            target,
+            duration
+        ) {
+
+            const start =
+                window.pageYOffset;
+
+            const distance =
+                target - start;
+
+            const startTime =
+                performance.now();
+
+            function animate(
+                currentTime
+            ) {
+
+                const elapsed =
+                    currentTime -
+                    startTime;
+
+                const progress =
+                    Math.min(
+                        elapsed /
+                        duration,
+                        1
+                    );
+
+                const eased =
+                    1 -
+                    Math.pow(
+                        1 - progress,
+                        3
+                    );
+
+                window.scrollTo(
+                    0,
+                    start +
+                    distance *
+                    eased
+                );
+
+                if (
+                    progress < 1
+                ) {
+
+                    requestAnimationFrame(
+                        animate
+                    );
+                }
+            }
+
+            requestAnimationFrame(
+                animate
+            );
+        }
+
+    </script>
+
+</body>
+
+</html>
