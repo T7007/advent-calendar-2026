@@ -328,7 +328,7 @@
 
     </div>
 
-    <audio id="music" loop>
+    <audio id="music" autoplay loop>
         <source src="audio/dec06-holly-christmas.mp3"
                 type="audio/mpeg">
     </audio>
@@ -480,6 +480,23 @@
             }, 300);
         }
 
+        window.addEventListener("load", () => {
+        
+            const music =
+                document.getElementById("music");
+        
+            music.volume = 0.2;
+        
+            music.play().catch(() => {
+        
+                console.log(
+                    "Autoplay blocked by browser."
+                );
+        
+            });
+        
+        });
+        
         showQuestion();
 
     </script>
