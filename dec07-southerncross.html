@@ -312,40 +312,40 @@
                          style="position:absolute;left:0;top:0;z-index:1;pointer-events:none">
 
                     <line id="line1"
-                          x1="160"
-                          y1="40"
-                          x2="80"
-                          y2="130"
-                          stroke="white"
-                          stroke-width="3"
-                          opacity="0" />
+                        x1="160"
+                        y1="40"
+                        x2="120"
+                        y2="290"
+                        stroke="white"
+                        stroke-width="3"
+                        opacity="0" />
 
                     <line id="line2"
-                          x1="80"
-                          y1="130"
-                          x2="240"
-                          y2="130"
-                          stroke="white"
-                          stroke-width="3"
-                          opacity="0" />
+                        x1="120"
+                        y1="290"
+                        x2="80"
+                        y2="130"
+                        stroke="white"
+                        stroke-width="3"
+                        opacity="0" />
 
                     <line id="line3"
-                          x1="240"
-                          y1="130"
-                          x2="160"
-                          y2="210"
-                          stroke="white"
-                          stroke-width="3"
-                          opacity="0" />
+                        x1="80"
+                        y1="130"
+                        x2="240"
+                        y2="130"
+                        stroke="white"
+                        stroke-width="3"
+                        opacity="0" />
 
                     <line id="line4"
-                          x1="160"
-                          y1="210"
-                          x2="120"
-                          y2="290"
-                          stroke="white"
-                          stroke-width="3"
-                          opacity="0" />
+                        x1="240"
+                        y1="130"
+                        x2="160"
+                        y2="210"
+                        stroke="white"
+                        stroke-width="3"
+                        opacity="0" />
 
                 </svg>
 
@@ -424,7 +424,9 @@
 
     <script>
 
-        let currentStar = 1;
+        const starOrder = [1, 5, 2, 3, 4];
+        let currentStep = 0;
+        
         let musicStarted = false;
 
         for (let i = 1; i <= 5; i++) {
@@ -455,7 +457,7 @@
                 musicStarted = true;
             }
 
-            if (number !== currentStar)
+            if (number !== starOrder[currentStep])
                 return;
 
             document
@@ -464,21 +466,29 @@
                 )
                 .classList.add("active");
 
-            if (number > 1) {
-
-                document
-                    .getElementById(
-                        "line" + (number - 1)
-                    )
-                    .setAttribute(
-                        "opacity",
-                        "1"
-                    );
+            if (currentStep === 1) {
+                document.getElementById("line1")
+                    .setAttribute("opacity", "1");
             }
 
-            currentStar++;
+            if (currentStep === 2) {
+                document.getElementById("line2")
+                    .setAttribute("opacity", "1");
+            }
 
-            if (currentStar === 6) {
+            if (currentStep === 3) {
+                document.getElementById("line3")
+                    .setAttribute("opacity", "1");
+            }
+
+            if (currentStep === 4) {
+                document.getElementById("line4")
+                    .setAttribute("opacity", "1");
+            }
+
+            currentStep++;
+
+            if (currentStep === starOrder.length) {
 
                 finishPuzzle();
             }
