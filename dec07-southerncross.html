@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Day 7 - Southern Cross</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <style>
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .starfield {
+
+            position: fixed;
+            inset: 0;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+        .starfield span {
+
+            position: absolute;
+
+            color: white;
+
+            opacity: .5;
+
+            animation:
+                twinkle 4s infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%, 100% {
+                opacity: .2;
+            }
+
+            50% {
+                opacity: .9;
+            }
+
+        }
+
+        .constellation-area {
+
+            position: relative;
+
+            width: 320px;
+            height: 350px;
+
+            margin: 30px auto;
+        }
+
+        .constellation-line {
+
+            position: absolute;
+
+            background: white;
+
+            height: 3px;
+
+            transform-origin: left center;
+
+            opacity: 0;
+        }
+
+        .star {
+
+            position: absolute;
+
+            width: 28px;
+            height: 28px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            box-shadow:
+                0 0 10px white,
+                0 0 20px white;
+
+            cursor: pointer;
+
+            transition: all .3s ease;
+        }
+
+        .star.active {
+
+            background: gold;
+
+            box-shadow:
+                0 0 20px gold,
+                0 0 40px gold;
+        }
+
+        .star:hover {
+
+            transform: scale(1.2);
+        }
+
+        .voucher {
+
+            position: relative;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef8ff,
+                    #ffffff
+                );
+
+            border:
+                3px dashed #7aa5d8;
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            margin-top: 20px;
+
+            box-shadow:
+                0 10px 25px rgba(0,0,0,.15);
+
+            overflow: hidden;
+        }
+
+        .voucher::before,
+        .voucher::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 30px;
+            height: 30px;
+
+            background: white;
+
+            border-radius: 50%;
+        }
+
+        .voucher::before {
+
+            left: -15px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+        }
+
+        .voucher::after {
+
+            right: -15px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+        }
+
+        .voucher-header {
+
+            background: #4a78b3;
+
+            color: white;
+
+            font-weight: bold;
+
+            padding: 12px;
+
+            margin:
+                -25px
+                -25px
+                20px
+                -25px;
+        }
+
+        .gold-seal {
+
+            position: absolute;
+
+            top: 15px;
+            right: 15px;
+
+            width: 80px;
+            height: 80px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            font-size: 0.65rem;
+            font-weight: bold;
+
+            color: #7a5c00;
+
+            background:
+                radial-gradient(
+                    circle at 30% 30%,
+                    #fff7b2,
+                    #d4af37 60%,
+                    #b8860b
+                );
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .reveal {
+
+            animation:
+                fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(20px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="snow"></div>
+
+    <div class="tree">
+        🎄
+    </div>
+
+    <div class="starfield">
+
+        <span style="top:10%;left:8%;">✦</span>
+        <span style="top:20%;left:80%;">✦</span>
+        <span style="top:35%;left:15%;">✦</span>
+        <span style="top:40%;left:90%;">✦</span>
+        <span style="top:60%;left:5%;">✦</span>
+        <span style="top:70%;left:75%;">✦</span>
+        <span style="top:80%;left:30%;">✦</span>
+
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>⭐ Day 7 ⭐</h1>
+
+            <h2>
+                Southern Cross Puzzle
+            </h2>
+
+            <p>
+                Connect the stars in the correct order to reveal today's surprise.
+            </p>
+
+            <div class="constellation-area">
+
+                <svg width="320"
+                     height="350"
+                     style="position:absolute;left:0;top:0;z-index:1">
+
+                    <line id="line1"
+                          x1="160"
+                          y1="40"
+                          x2="80"
+                          y2="130"
+                          stroke="white"
+                          stroke-width="3"
+                          opacity="0" />
+
+                    <line id="line2"
+                          x1="80"
+                          y1="130"
+                          x2="240"
+                          y2="130"
+                          stroke="white"
+                          stroke-width="3"
+                          opacity="0" />
+
+                    <line id="line3"
+                          x1="240"
+                          y1="130"
+                          x2="160"
+                          y2="210"
+                          stroke="white"
+                          stroke-width="3"
+                          opacity="0" />
+
+                    <line id="line4"
+                          x1="160"
+                          y1="210"
+                          x2="120"
+                          y2="290"
+                          stroke="white"
+                          stroke-width="3"
+                          opacity="0" />
+
+                </svg>
+
+                <div class="star"
+                     id="star1"
+                     style="top:25px;left:145px;"></div>
+
+                <div class="star"
+                     id="star2"
+                     style="top:115px;left:65px;"></div>
+
+                <div class="star"
+                     id="star3"
+                     style="top:115px;left:225px;"></div>
+
+                <div class="star"
+                     id="star4"
+                     style="top:195px;left:145px;"></div>
+
+                <div class="star"
+                     id="star5"
+                     style="top:275px;left:105px;"></div>
+
+            </div>
+
+            <div id="message"
+                 class="hidden reveal">
+
+                <h2>
+                    ⭐ Southern Cross Complete ⭐
+                </h2>
+
+                <div class="voucher">
+
+                    <div class="gold-seal">
+                        VALID<br>
+                        FOR<br>
+                        BREAKFAST
+                    </div>
+
+                    <div class="voucher-header">
+                        WINTER BREAKFAST VOUCHER
+                    </div>
+
+                    <h2>
+                        🥐 BREAKFAST DATE 🥐
+                    </h2>
+
+                    <p>
+                        This voucher includes:
+                    </p>
+
+                    <p>
+                        ☕ Coffee<br>
+                        🥞 Breakfast<br>
+                        ❤️ Great Company
+                    </p>
+
+                    <p>
+                        No expiry date.
+                    </p>
+
+                </div>
+
+                <br>
+
+                <h2>
+                    ❤️ 25 Days ❤️<br>
+                    of Christmas
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <audio id="music">
+        <source src="audio/dec07-make-it-feel.mp3"
+                type="audio/mpeg">
+    </audio>
+
+    <script>
+
+        let currentStar = 1;
+        let musicStarted = false;
+
+        for (let i = 1; i <= 5; i++) {
+
+            document
+                .getElementById(
+                    "star" + i
+                )
+                .addEventListener(
+                    "click",
+                    () => clickStar(i)
+                );
+        }
+
+        function clickStar(number) {
+
+            if (!musicStarted) {
+
+                const music =
+                    document.getElementById(
+                        "music"
+                    );
+
+                music.volume = 0.2;
+
+                music.play();
+
+                musicStarted = true;
+            }
+
+            if (number !== currentStar)
+                return;
+
+            document
+                .getElementById(
+                    "star" + number
+                )
+                .classList.add("active");
+
+            if (number > 1) {
+
+                document
+                    .getElementById(
+                        "line" + (number - 1)
+                    )
+                    .setAttribute(
+                        "opacity",
+                        "1"
+                    );
+            }
+
+            currentStar++;
+
+            if (currentStar === 6) {
+
+                finishPuzzle();
+            }
+        }
+
+        function finishPuzzle() {
+
+            const music =
+                document.getElementById(
+                    "music"
+                );
+
+            music.loop = false;
+
+            const message =
+                document.getElementById(
+                    "message"
+                );
+
+            message.classList.remove(
+                "hidden"
+            );
+
+            setTimeout(() => {
+
+                message.scrollIntoView({
+                    behavior: "smooth"
+                });
+
+            }, 400);
+
+        }
+
+    </script>
+
+</body>
+
+</html>
