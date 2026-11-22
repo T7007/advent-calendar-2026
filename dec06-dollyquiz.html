@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Day 6 - Dolly Quiz</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <style>
+
+        body {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff80ab,
+                    #ce93d8,
+                    #9575cd
+                );
+
+            overflow-x: hidden;
+        }
+
+        .sparkles {
+
+            position: fixed;
+            inset: 0;
+
+            pointer-events: none;
+
+            background-image:
+                radial-gradient(
+                    rgba(255,255,255,.8) 2px,
+                    transparent 2px
+                );
+
+            background-size: 120px 120px;
+
+            animation:
+                sparkleMove 20s linear infinite;
+
+            opacity: .4;
+
+            z-index: 0;
+        }
+
+        @keyframes sparkleMove {
+
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 200px 200px;
+            }
+
+        }
+
+        .music-notes {
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            z-index: 1;
+
+            overflow: hidden;
+        }
+
+        .music-notes span {
+
+            position: absolute;
+
+            font-size: 2rem;
+
+            opacity: .25;
+
+            animation:
+                floatUp 12s linear infinite;
+        }
+
+        .music-notes span:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .music-notes span:nth-child(2) {
+            left: 30%;
+            animation-delay: 2s;
+        }
+
+        .music-notes span:nth-child(3) {
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        .music-notes span:nth-child(4) {
+            left: 70%;
+            animation-delay: 6s;
+        }
+
+        .music-notes span:nth-child(5) {
+            left: 90%;
+            animation-delay: 8s;
+        }
+
+        @keyframes floatUp {
+
+            from {
+
+                transform:
+                    translateY(110vh);
+
+                opacity: 0;
+            }
+
+            20% {
+                opacity: .25;
+            }
+
+            to {
+
+                transform:
+                    translateY(-20vh);
+
+                opacity: 0;
+            }
+
+        }
+
+        .card {
+
+            position: relative;
+
+            z-index: 2;
+
+            background:
+                rgba(255,255,255,.92);
+
+            border-radius: 20px;
+
+            padding: 24px;
+
+            text-align: center;
+
+            box-shadow:
+                0 0 30px rgba(255,255,255,.3);
+        }
+
+        h1 {
+
+            color: white;
+
+            text-shadow:
+                0 0 10px #fff,
+                0 0 20px #ff80ab,
+                0 0 40px #ce93d8;
+
+            margin-bottom: 10px;
+        }
+
+        h2 {
+
+            color: #b03060;
+        }
+
+        .quiz-question {
+
+            margin-top: 30px;
+        }
+
+        .answer-btn {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff80ab,
+                    #ce93d8
+                );
+
+            color: white;
+
+            border: none;
+
+            padding: 14px 24px;
+
+            margin: 10px;
+
+            border-radius: 12px;
+
+            font-size: 1rem;
+
+            cursor: pointer;
+        }
+
+        .answer-btn:hover {
+
+            transform: scale(1.05);
+        }
+
+        #result {
+
+            display: none;
+        }
+
+        .answer-explanations {
+
+            background:
+                rgba(255,255,255,.45);
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            text-align: left;
+
+            margin-top: 20px;
+        }
+
+        .answer-explanations p {
+
+            margin-bottom: 18px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sparkles"></div>
+
+    <div class="music-notes">
+
+        <span>🎵</span>
+        <span>🎶</span>
+        <span>🎵</span>
+        <span>🎶</span>
+        <span>🎵</span>
+
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>
+                🤠 Dolly Quiz 🤠
+            </h1>
+
+            <p>
+                How much do you know about Dolly Parton?
+            </p>
+
+            <div id="quiz">
+
+                <div id="question-container">
+
+                </div>
+
+            </div>
+
+            <div id="result">
+
+                <h2>
+                    🤠 Quiz Complete! 🤠
+                </h2>
+
+                <p>
+                    You scored
+                    <strong>
+                        <span id="score"></span>
+                    </strong>
+                    out of 5.
+                </p>
+
+                <h2>
+                    💖 Dolly approves of your answers! 💖
+                </h2>
+
+                <div class="answer-explanations">
+
+                    <p>
+                        <strong>1. True</strong><br>
+                        Miley Cyrus shared that Dolly gifted her the mannequin for Christmas.
+                    </p>
+
+                    <p>
+                        <strong>2. False</strong><br>
+                        Dolly has said she puts up her Christmas decorations and turns on her lights the day after Thanksgiving.
+                    </p>
+
+                    <p>
+                        <strong>3. True</strong><br>
+                        Dolly wrote 14 original songs for the film and starred in it alongside Christine Baranski and Jenifer Lewis.
+                    </p>
+
+                    <p>
+                        <strong>4. False</strong><br>
+                        Mountain Magic first appeared very briefly in A Smoky Mountain Christmas (1986) before she performed it in full on her variety show two years later.
+                    </p>
+
+                    <p>
+                        <strong>5. True</strong><br>
+                        The Imagination Library launched in 1995. The programme mails free books to young children and reflects Dolly's lifelong commitment to literacy and giving.
+                    </p>
+
+                </div>
+
+                <br>
+
+                <h2>
+                    ❤️ 25 Days ❤️<br>
+                    of Christmas
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <audio id="music" loop>
+        <source src="audio/christmas-theme.mp3"
+                type="audio/mpeg">
+    </audio>
+
+    <script>
+
+        const questions = [
+
+            {
+                question: "Dolly Parton once gave goddaughter Miley Cyrus a Christmas mannequin made to Dolly's exact proportions and wearing her outfit.",
+                answer: true
+            },
+
+            {
+                question: "Dolly Parton waits until December 15 to put up her Christmas decorations.",
+                answer: false
+            },
+
+            {
+                question: "The 2020 holiday movie Christmas on the Square features 14 original songs written by Dolly Parton.",
+                answer: true
+            },
+
+            {
+                question: "The song Mountain Magic first appeared as a full-length studio single before Dolly Parton's 1986 TV movie A Smoky Mountain Christmas.",
+                answer: false
+            },
+
+            {
+                question: "Dolly Parton founded her Imagination Library book-gifting program in 1995, inspired by her father's inability to read or write.",
+                answer: true
+            }
+
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let musicStarted = false;
+
+        function showQuestion() {
+
+            const container =
+                document.getElementById(
+                    "question-container"
+                );
+
+            const q =
+                questions[currentQuestion];
+
+            container.innerHTML = `
+
+                <div class="quiz-question">
+
+                    <p>
+                        Question ${currentQuestion + 1}
+                        of ${questions.length}
+                    </p>
+
+                    <p>
+                        <strong>
+                            ${q.question}
+                        </strong>
+                    </p>
+
+                    <button
+                        class="answer-btn"
+                        onclick="answer(true)">
+                        True
+                    </button>
+
+                    <button
+                        class="answer-btn"
+                        onclick="answer(false)">
+                        False
+                    </button>
+
+                </div>
+            `;
+        }
+
+        function answer(userAnswer) {
+
+            if (!musicStarted) {
+
+                const music =
+                    document.getElementById(
+                        "music"
+                    );
+
+                music.volume = 0.2;
+
+                music.play();
+
+                musicStarted = true;
+            }
+
+            if (
+                userAnswer ===
+                questions[currentQuestion].answer
+            ) {
+                score++;
+            }
+
+            currentQuestion++;
+
+            if (
+                currentQuestion <
+                questions.length
+            ) {
+
+                showQuestion();
+
+            }
+            else {
+
+                endQuiz();
+            }
+        }
+
+        function endQuiz() {
+
+            document
+                .getElementById("quiz")
+                .style.display = "none";
+
+            document
+                .getElementById("result")
+                .style.display = "block";
+
+            document
+                .getElementById("score")
+                .textContent = score;
+
+            const music =
+                document.getElementById(
+                    "music"
+                );
+
+            music.loop = false;
+
+            setTimeout(() => {
+
+                document
+                    .getElementById("result")
+                    .scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            }, 300);
+        }
+
+        showQuestion();
+
+    </script>
+
+</body>
+
+</html>
