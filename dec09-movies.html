@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Day 9 - Christmas Movies</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <style>
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            display: flex;
+            justify-content: space-around;
+
+            padding: 20px;
+
+            z-index: 5;
+
+            pointer-events: none;
+
+            filter:
+                drop-shadow(0 0 10px rgba(255,255,255,.4))
+                drop-shadow(0 0 20px rgba(255,255,255,.2));
+        }
+
+        .lights::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            top: 8px;
+
+            height: 4px;
+
+            background: #1a1a1a;
+
+            border-radius: 10px;
+
+            z-index: -1;
+        }
+
+        .bulb {
+            width: 18px;
+            height: 18px;
+
+            margin-top: 4px;
+
+            border-radius: 50%;
+
+            position: relative;
+        }
+
+        .bulb::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 2px;
+            height: 12px;
+
+            background: #1a1a1a;
+
+            top: -12px;
+            left: 8px;
+        }
+
+        .red {
+            background: #ff4d4d;
+            animation: twinkle 1.8s infinite alternate;
+        }
+
+        .green {
+            background: #4dff88;
+            animation: twinkle 2.2s infinite alternate;
+        }
+
+        .gold {
+            background: #ffd700;
+            animation: twinkle 1.6s infinite alternate;
+        }
+
+        .blue {
+            background: #66ccff;
+            animation: twinkle 2.5s infinite alternate;
+        }
+
+        @keyframes twinkle {
+
+            from {
+                opacity: .4;
+            }
+
+            to {
+
+                opacity: 1;
+
+                box-shadow:
+                    0 0 15px currentColor,
+                    0 0 30px currentColor;
+            }
+        }
+
+        .movie-row {
+
+            display: flex;
+
+            flex-direction: column;
+
+            text-align: left;
+
+            margin-bottom: 18px;
+        }
+
+        .movie-row label {
+
+            margin-bottom: 6px;
+
+            font-weight: bold;
+        }
+
+        select {
+
+            padding: 10px;
+
+            border-radius: 10px;
+
+            border: 2px solid #ccc;
+
+            font-size: 1rem;
+        }
+
+        .correct {
+
+            border: 3px solid #4CAF50 !important;
+        }
+
+        .incorrect {
+
+            border: 3px solid #f44336 !important;
+        }
+
+        .check-button {
+
+            background: #29457f;
+
+            color: white;
+
+            border: none;
+
+            padding: 14px 24px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 1rem;
+
+            margin-top: 20px;
+        }
+
+        .check-button:hover {
+
+            transform: scale(1.05);
+        }
+
+        #result {
+
+            display: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="lights">
+
+        <span class="bulb red"></span>
+        <span class="bulb green"></span>
+        <span class="bulb gold"></span>
+        <span class="bulb blue"></span>
+        <span class="bulb red"></span>
+        <span class="bulb green"></span>
+        <span class="bulb gold"></span>
+
+    </div>
+
+    <div class="tree">
+        🎄
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>
+                🎬 Day 9 🎬
+            </h1>
+
+            <h2>
+                Christmas Movie Match-Up
+            </h2>
+
+            <p>
+                Match each movie to the correct actor.
+            </p>
+
+            <div id="quiz">
+
+                <div id="movie-list"></div>
+
+                <button class="check-button"
+                        onclick="checkAnswers()">
+
+                    ✅ Check Answers
+                </button>
+
+            </div>
+
+            <div id="result">
+
+                <h2>
+                    🎬 Christmas Movie Expert! 🎬
+                </h2>
+
+                <p>
+                    You scored
+                    <strong><span id="score"></span></strong>
+                    out of 9.
+                </p>
+
+                <p>
+                    ⭐ You're officially approved for Christmas movie season! ⭐
+                </p>
+
+                <br>
+
+                <h2>
+                    ❤️ 25 Days ❤️<br>
+                    of Christmas
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <audio id="music" loop>
+        <source src="audio/dec10-christmas-lights.mp3"
+                type="audio/mpeg">
+    </audio>
+
+    <script>
+
+        const answers = {
+
+            "Home Alone":
+                "Macaulay Culkin",
+
+            "Die Hard":
+                "Alan Rickman",
+
+            "Christmas Chronicles":
+                "Goldie Hawn",
+
+            "National Lampoon's Christmas Vacation":
+                "Chevy Chase",
+
+            "The Muppet Christmas Carol":
+                "Kermit the Frog",
+
+            "Scrooged":
+                "Bill Murray",
+
+            "Love Actually":
+                "Keira Knightley",
+
+            "The Santa Clause":
+                "Tim Allen",
+
+            "Elf":
+                "Will Ferrell"
+        };
+
+        const actors = [
+
+            "Alan Rickman",
+            "Bill Murray",
+            "Chevy Chase",
+            "Goldie Hawn",
+            "Keira Knightley",
+            "Kermit the Frog",
+            "Macaulay Culkin",
+            "Tim Allen",
+            "Will Ferrell"
+
+        ];
+
+        let musicStarted = false;
+
+        function shuffle(array) {
+
+            return [...array]
+                .sort(
+                    () => Math.random() - 0.5
+                );
+        }
+
+        function buildQuiz() {
+
+            const container =
+                document.getElementById(
+                    "movie-list"
+                );
+
+            const shuffledActors =
+                shuffle(actors);
+
+            Object.keys(answers)
+                .forEach(movie => {
+
+                    const row =
+                        document.createElement(
+                            "div"
+                        );
+
+                    row.className =
+                        "movie-row";
+
+                    const options =
+                        shuffledActors
+                        .map(actor =>
+                            `<option>${actor}</option>`
+                        )
+                        .join("");
+
+                    row.innerHTML = `
+
+                        <label>${movie}</label>
+
+                        <select
+                            id="${movie}"
+                            onchange="startMusic()">
+
+                            <option>
+                                -- Select Actor --
+                            </option>
+
+                            ${options}
+
+                        </select>
+                    `;
+
+                    container.appendChild(
+                        row
+                    );
+
+                });
+
+        }
+
+        function startMusic() {
+
+            if (musicStarted)
+                return;
+
+            const music =
+                document.getElementById(
+                    "music"
+                );
+
+            music.volume = 0.2;
+
+            music.play();
+
+            musicStarted = true;
+        }
+
+        function checkAnswers() {
+
+            let score = 0;
+
+            Object.keys(answers)
+                .forEach(movie => {
+
+                    const select =
+                        document
+                        .getElementById(
+                            movie
+                        );
+
+                    select.classList.remove(
+                        "correct",
+                        "incorrect"
+                    );
+
+                    if (
+                        select.value ===
+                        answers[movie]
+                    ) {
+
+                        score++;
+
+                        select.classList.add(
+                            "correct"
+                        );
+
+                    } else {
+
+                        select.classList.add(
+                            "incorrect"
+                        );
+                    }
+
+                });
+
+            document
+                .getElementById("score")
+                .textContent = score;
+
+            document
+                .getElementById("result")
+                .style.display = "block";
+
+            setTimeout(() => {
+
+                document
+                    .getElementById("result")
+                    .scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            }, 300);
+        }
+
+        buildQuiz();
+
+    </script>
+
+</body>
+
+</html>
