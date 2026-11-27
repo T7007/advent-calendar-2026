@@ -1,15 +1,507 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Coming Soon</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Day 11 - Circus Puzzle</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <style>
+
+        body {
+
+            overflow-x: hidden;
+        }
+
+        .circus-frame {
+
+            position: relative;
+
+            display: inline-block;
+
+            padding: 12px;
+
+            border: 8px solid #c62828;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.15);
+
+            margin-top: 20px;
+        }
+
+        .circus-frame.complete {
+
+            animation:
+                marqueeLights .8s infinite alternate;
+        }
+
+        @keyframes marqueeLights {
+
+            from {
+
+                box-shadow:
+                    0 0 10px gold,
+                    0 0 20px gold;
+            }
+
+            to {
+
+                box-shadow:
+                    0 0 30px gold,
+                    0 0 60px gold;
+            }
+
+        }
+
+        #puzzle-board {
+
+            width: 300px;
+            height: 300px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            grid-template-rows:
+                repeat(3, 1fr);
+
+            gap: 2px;
+        }
+
+        .piece {
+
+            width: 100px;
+            height: 100px;
+
+            background-image:
+                url("images/dec11-circus.jpg");
+
+            background-size:
+                300px 300px;
+
+            cursor: pointer;
+
+            border: 2px solid rgba(255,255,255,.3);
+
+            box-sizing: border-box;
+
+            transition:
+                transform .2s ease;
+        }
+
+        .piece:hover {
+
+            transform: scale(1.03);
+        }
+
+        .selected {
+
+            border:
+                4px solid gold;
+        }
+
+        .puzzle-complete {
+
+            animation:
+                magicalReveal 2.5s ease forwards;
+        }
+
+        @keyframes magicalReveal {
+
+            0% {
+
+                transform: scale(1);
+
+                filter:
+                    brightness(1);
+            }
+
+            30% {
+
+                transform: scale(1.03);
+
+                filter:
+                    brightness(1.4)
+                    drop-shadow(
+                        0 0 20px gold
+                    );
+            }
+
+            60% {
+
+                transform: scale(1.05);
+
+                filter:
+                    brightness(1.8)
+                    drop-shadow(
+                        0 0 40px gold
+                    );
+            }
+
+            100% {
+
+                transform: scale(1);
+
+                filter:
+                    brightness(1.3)
+                    drop-shadow(
+                        0 0 20px gold
+                    );
+            }
+
+        }
+
+        .sparkle-burst {
+
+            position: absolute;
+
+            inset: 0;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+            font-size: 2rem;
+
+            z-index: 100;
+
+            pointer-events: none;
+
+            animation:
+                sparkleBurst 2s ease-out forwards;
+        }
+
+        @keyframes sparkleBurst {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    scale(.5);
+            }
+
+            50% {
+
+                opacity: 1;
+
+                transform:
+                    scale(1.3);
+            }
+
+            to {
+
+                opacity: 0;
+
+                transform:
+                    scale(2);
+            }
+
+        }
+
+        .hidden {
+
+            display: none;
+        }
+
+        .reveal {
+
+            animation:
+                fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(20px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
+        }
+
+        #message {
+
+            margin-top: 30px;
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-    <h1>🎄 Day 11 🎄</h1>
+    <div class="snow"></div>
 
-    <p>
-        This surprise isn't ready yet...
-    </p>
+    <div class="container">
+
+        <div class="card">
+
+            <h1>
+                🎪 Day 11 🎪
+            </h1>
+
+            <h2>
+                Circus Puzzle
+            </h2>
+
+            <p>
+                Put the picture back together.
+            </p>
+
+            <div id="circus-frame"
+                 class="circus-frame">
+
+                <div id="puzzle-board"></div>
+
+                <div id="sparkle-burst"
+                     class="sparkle-burst hidden">
+
+                    ✨ ✨ ⭐ ✨ ⭐ ✨
+                    <br>
+                    ⭐ ✨ 🎪 ✨ ⭐
+                    <br>
+                    ✨ ⭐ ✨ ⭐ ✨
+
+                </div>
+
+            </div>
+
+            <div id="message"
+                 class="hidden reveal">
+
+                <h2>
+                    🎪 Bravo! 🎪
+                </h2>
+
+                <p>
+                    You completed the circus puzzle.
+                </p>
+
+                <p>
+                    ✨ Every piece is back where it belongs ✨
+                </p>
+
+                <p>
+                    The show can go on!
+                </p>
+
+                <br>
+
+                <h2>
+                    ❤️ 25 Days ❤️<br>
+                    of Christmas
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <audio id="music">
+        <source src="audio/dec11-cold.mp3"
+                type="audio/mpeg">
+    </audio>
+
+    <script>
+
+        const board =
+            document.getElementById(
+                "puzzle-board"
+            );
+
+        const correctOrder =
+            [0,1,2,3,4,5,6,7,8];
+
+        let pieces =
+            [...correctOrder];
+
+        let selected = null;
+
+        let musicStarted = false;
+
+        pieces.sort(
+            () => Math.random() - 0.5
+        );
+
+        function createBoard() {
+
+            board.innerHTML = "";
+
+            pieces.forEach(
+                (piece,index) => {
+
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
+
+                    div.className =
+                        "piece";
+
+                    div.dataset.index =
+                        index;
+
+                    const row =
+                        Math.floor(
+                            piece / 3
+                        );
+
+                    const col =
+                        piece % 3;
+
+                    div.style.backgroundPosition =
+                        `-${col * 100}px -${row * 100}px`;
+
+                    div.addEventListener(
+                        "click",
+                        () => selectPiece(index)
+                    );
+
+                    board.appendChild(
+                        div
+                    );
+
+                }
+            );
+
+        }
+
+        function selectPiece(index) {
+
+            if (!musicStarted) {
+
+                const music =
+                    document.getElementById(
+                        "music"
+                    );
+
+                music.volume = 0.2;
+
+                music.play();
+
+                musicStarted = true;
+            }
+
+            const allPieces =
+                document.querySelectorAll(
+                    ".piece"
+                );
+
+            if (selected === null) {
+
+                selected = index;
+
+                allPieces[index]
+                    .classList.add(
+                        "selected"
+                    );
+
+                return;
+            }
+
+            [
+                pieces[selected],
+                pieces[index]
+            ] = [
+                pieces[index],
+                pieces[selected]
+            ];
+
+            selected = null;
+
+            createBoard();
+
+            checkComplete();
+
+        }
+
+        function checkComplete() {
+
+            const solved =
+                pieces.every(
+                    (piece,index) =>
+                        piece === index
+                );
+
+            if (solved) {
+
+                completePuzzle();
+
+            }
+
+        }
+
+        function completePuzzle() {
+
+            board.classList.add(
+                "puzzle-complete"
+            );
+
+            document
+                .getElementById(
+                    "circus-frame"
+                )
+                .classList.add(
+                    "complete"
+                );
+
+            document
+                .getElementById(
+                    "sparkle-burst"
+                )
+                .classList.remove(
+                    "hidden"
+                );
+
+            setTimeout(() => {
+
+                const message =
+                    document.getElementById(
+                        "message"
+                    );
+
+                message.classList.remove(
+                    "hidden"
+                );
+
+                message.scrollIntoView({
+                    behavior: "smooth"
+                });
+
+            }, 2200);
+
+        }
+
+        createBoard();
+
+    </script>
 
 </body>
+
 </html>
