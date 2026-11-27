@@ -27,30 +27,19 @@ body {
     display: grid;
 
     grid-template-columns:
-        repeat(14, 30px);
+        repeat(14, min(24px, 6vw));
 
-    gap: 2px;
+    gap: 1px;
 
     justify-content: center;
-
-    margin-top: 20px;
 }
 
 .cell {
 
-    width: 30px;
-    height: 30px;
+    width: min(24px, 6vw);
+    height: min(24px, 6vw);
 
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    background: white;
-
-    border: 1px solid #ddd;
-
-    font-weight: bold;
+    font-size: min(16px, 4vw);
 }
 
 </style>
