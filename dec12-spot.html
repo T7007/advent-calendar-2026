@@ -76,6 +76,12 @@
 
         }
 
+        .lights.celebration .bulb {
+        
+            animation:
+                twinkle .2s infinite alternate;
+        }
+        
         .photos {
 
             display: flex;
@@ -510,6 +516,11 @@
                 .querySelector(
                     ".card"
                 )
+                .classList.add(
+                    "celebration"
+                );
+
+                .querySelector(".lights")
                 .classList.add(
                     "celebration"
                 );
