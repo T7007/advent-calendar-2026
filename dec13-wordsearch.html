@@ -276,6 +276,7 @@ function clearSelection() {
         });
 
     selectedCells = [];
+    direction = null;
 }
 
 function startSelection(cell) {
@@ -291,6 +292,8 @@ function startSelection(cell) {
     );
 }
 
+let direction = null;
+
 function extendSelection(cell) {
 
     if (!selecting)
@@ -304,11 +307,94 @@ function extendSelection(cell) {
         return;
     }
 
-    selectedCells.push(cell);
+    const row =
+        parseInt(
+            cell.dataset.row
+        );
+
+    const col =
+        parseInt(
+            cell.dataset.col
+        );
+
+    if (
+        selectedCells.length === 1
+    ) {
+
+        const start =
+            selectedCells[0];
+
+        const startRow =
+            parseInt(
+                start.dataset.row
+            );
+
+        const startCol =
+            parseInt(
+                start.dataset.col
+            );
+
+        direction = {
+
+            dr:
+                Math.sign(
+                    row - startRow
+                ),
+
+            dc:
+                Math.sign(
+                    col - startCol
+                )
+
+        };
+
+    }
+
+    if (
+        selectedCells.length >= 2
+    ) {
+
+        const last =
+            selectedCells[
+                selectedCells.length - 1
+            ];
+
+        const lastRow =
+            parseInt(
+                last.dataset.row
+            );
+
+        const lastCol =
+            parseInt(
+                last.dataset.col
+            );
+
+        const expectedRow =
+            lastRow +
+            direction.dr;
+
+        const expectedCol =
+            lastCol +
+            direction.dc;
+
+        if (
+            row !== expectedRow ||
+            col !== expectedCol
+        ) {
+
+            return;
+        }
+
+    }
+
+    selectedCells.push(
+        cell
+    );
 
     cell.classList.add(
         "selected"
     );
+
 }
       
 words.forEach(
