@@ -36,10 +36,37 @@ body {
 
 .cell {
 
-    width: min(24px, 6vw);
-    height: min(24px, 6vw);
+    width: 24px;
+    height: 24px;
 
-    font-size: min(16px, 4vw);
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    font-weight: bold;
+
+    font-size: 0.9rem;
+
+    user-select: none;
+
+    touch-action: none;
+}
+
+.cell.selected {
+
+    background: #ffe082;
+}
+
+.cell.found {
+
+    background: gold;
+
+    color: white;
 }
 
 </style>
@@ -93,6 +120,13 @@ for (let r = 0; r < SIZE; r++) {
 
 const placedWords = [];
 
+let selecting = false;
+
+let selectedCells = [];
+
+const foundWords =
+    new Set();
+      
 function canPlace(
     word,
     row,
@@ -227,6 +261,56 @@ function placeWord(word) {
 
 }
 
+function clearSelection() {
+
+    document
+        .querySelectorAll(
+            ".selected"
+        )
+        .forEach(cell => {
+
+            cell.classList.remove(
+                "selected"
+            );
+
+        });
+
+    selectedCells = [];
+}
+
+function startSelection(cell) {
+
+    clearSelection();
+
+    selecting = true;
+
+    selectedCells.push(cell);
+
+    cell.classList.add(
+        "selected"
+    );
+}
+
+function extendSelection(cell) {
+
+    if (!selecting)
+        return;
+
+    if (
+        selectedCells.includes(
+            cell
+        )
+    ) {
+        return;
+    }
+
+    selectedCells.push(cell);
+
+    cell.classList.add(
+        "selected"
+    );
+}
+      
 words.forEach(
     placeWord
 );
@@ -294,12 +378,93 @@ for (
         cell.dataset.row = r;
         cell.dataset.col = c;
 
+      cell.addEventListener(
+          "mousedown",
+          () => startSelection(cell)
+      );
+      
+      cell.addEventListener(
+          "mouseenter",
+          () => extendSelection(cell)
+      );
+      
+      cell.addEventListener(
+          "touchstart",
+          e => {
+      
+              e.preventDefault();
+      
+              startSelection(cell);
+      
+          }
+      );
+      
+      cell.addEventListener(
+          "touchmove",
+          e => {
+      
+              e.preventDefault();
+      
+              const touch =
+                  document.elementFromPoint(
+                      e.touches[0].clientX,
+                      e.touches[0].clientY
+                  );
+      
+              if (
+                  touch &&
+                  touch.classList.contains(
+                      "cell"
+                  )
+              ) {
+      
+                  extendSelection(
+                      touch
+                  );
+      
+              }
+      
+          }
+      );
+          
         gridElement.appendChild(
             cell
         );
     }
 }
 
+document.addEventListener(
+    "mouseup",
+    finishSelection
+);
+
+document.addEventListener(
+    "touchend",
+    finishSelection
+);
+
+function finishSelection() {
+
+    if (!selecting)
+        return;
+
+    selecting = false;
+
+    const word =
+        selectedCells
+            .map(
+                cell => cell.textContent
+            )
+            .join("");
+
+    console.log(
+        "Selected:",
+        word
+    );
+
+    clearSelection();
+}
+      
 console.log(
     "Placed Words"
 );
