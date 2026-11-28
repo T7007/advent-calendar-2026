@@ -543,12 +543,43 @@ function finishSelection() {
             )
             .join("");
 
-    console.log(
-        "Selected:",
-        word
-    );
-
-    clearSelection();
+            const match =
+                placedWords.find(
+                    entry =>
+                        entry.word === word
+                );
+            
+            if (
+                match &&
+                !foundWords.has(word)
+            ) {
+            
+                foundWords.add(word);
+            
+                selectedCells.forEach(
+                    cell =>
+                        cell.classList.add(
+                            "found"
+                        )
+                );
+            
+                console.log(
+                    "Found:",
+                    word
+                );
+            
+            } else {
+            
+                selectedCells.forEach(
+                    cell =>
+                        cell.classList.remove(
+                            "selected"
+                        )
+                );
+            
+            }
+            
+            clearSelection();
 }
       
 console.log(
